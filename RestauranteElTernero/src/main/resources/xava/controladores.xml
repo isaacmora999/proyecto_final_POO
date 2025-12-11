@@ -1,0 +1,13 @@
+<?xml version = "1.0" encoding = "ISO-8859-1"?>
+<!DOCTYPE controladores SYSTEM "dtds/controladores.dtd">
+
+<controladores>
+
+    <controlador nombre="FacturaReportes">
+        <hereda-de controlador="Typical"/>
+
+        <accion nombre="imprimir"
+                clase="ni.edu.uam.RestauranteElTernero.acciones.ImprimirFacturaAction"
+                icono="printer"/> </controlador>
+
+</controladores>

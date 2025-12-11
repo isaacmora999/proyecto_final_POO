@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport name="Factura"
+              language="java"
+              pageWidth="595" pageHeight="842"
+              columnWidth="555"
+              leftMargin="20" rightMargin="20"
+              topMargin="20" bottomMargin="20">
+
+    <!-- Parámetro que recibimos desde OpenXava -->
+    <parameter name="P_ID_FACTURA" class="java.lang.String">
+        <defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+    </parameter>
+
+    <!-- Consulta SQL -->
+    <queryString language="SQL"><![CDATA[
+SELECT
+    f.oid,
+    f.fecha,
+    f.estado,
+    c.nombre       AS cliente_nombre,
+    c.apellido     AS cliente_apellido,
+    m.numero       AS mesa_numero,
+    d.cantidad,
+    d.precioUnitario AS preciounitario,
+    d.subtotal,
+    p.nombre       AS producto_nombre,
+    f.total        AS total_factura
+FROM factura f
+JOIN cliente c         ON f.cliente_oid = c.oid
+JOIN mesa m            ON f.mesa_oid = m.oid
+JOIN facturadetalle d  ON d.factura_oid = f.oid
+JOIN producto p        ON d.producto_oid = p.oid
+WHERE f.oid = $P{P_ID_FACTURA}
+ORDER BY d.oid
+    ]]></queryString>
+
+    <!-- Campos -->
+    <field name="oid" class="java.lang.String"/>
+    <field name="fecha" class="java.sql.Timestamp"/>
+    <field name="estado" class="java.lang.String"/>
+    <field name="cliente_nombre" class="java.lang.String"/>
+    <field name="cliente_apellido" class="java.lang.String"/>
+    <field name="mesa_numero" class="java.lang.String"/>
+    <field name="cantidad" class="java.lang.Integer"/>
+    <field name="preciounitario" class="java.math.BigDecimal"/>
+    <field name="subtotal" class="java.math.BigDecimal"/>
+    <field name="producto_nombre" class="java.lang.String"/>
+    <field name="total_factura" class="java.math.BigDecimal"/>
+
+    <!-- Fondo -->
+    <background>
+        <band height="0"/>
+    </background>
+
+    <!-- Título -->
+    <title>
+        <band height="80">
+            <staticText>
+                <reportElement x="170" y="0" width="209" height="60"/>
+                <textElement textAlignment="Center">
+                    <font size="20" isBold="true"/>
+                </textElement>
+                <text><![CDATA[RESTAURANTE EL TERNERO
+FACTURA]]></text>
+            </staticText>
+        </band>
+    </title>
+
+    <!-- Encabezado de página (datos de la factura) -->
+    <pageHeader>
+        <band height="90">
+            <!-- Etiquetas -->
+            <staticText>
+                <reportElement x="180" y="10" width="100" height="20"/>
+                <text><![CDATA[Cliente:]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="180" y="30" width="100" height="20"/>
+                <text><![CDATA[Fecha:]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="180" y="50" width="100" height="20"/>
+                <text><![CDATA[Mesa:]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="180" y="70" width="100" height="20"/>
+                <text><![CDATA[Estado:]]></text>
+            </staticText>
+
+            <!-- Valores -->
+            <textField>
+                <reportElement x="280" y="10" width="171" height="20"/>
+                <textFieldExpression><![CDATA[$F{cliente_nombre} + " " + $F{cliente_apellido}]]></textFieldExpression>
+            </textField>
+
+            <textField pattern="dd/MM/yyyy">
+                <reportElement x="280" y="30" width="171" height="20"/>
+                <textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="280" y="50" width="131" height="20"/>
+                <textFieldExpression><![CDATA[$F{mesa_numero}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="280" y="70" width="131" height="20"/>
+                <textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageHeader>
+
+    <!-- Encabezado de columnas de detalle -->
+    <columnHeader>
+        <band height="40">
+            <staticText>
+                <reportElement x="40" y="10" width="200" height="20"/>
+                <text><![CDATA[Producto]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="250" y="10" width="80" height="20"/>
+                <text><![CDATA[Cantidad]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="340" y="10" width="80" height="20"/>
+                <text><![CDATA[Precio U.]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="430" y="10" width="80" height="20"/>
+                <text><![CDATA[Subtotal]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <!-- Detalle (una fila por producto) -->
+    <detail>
+        <band height="20">
+            <textField>
+                <reportElement x="40" y="0" width="200" height="18"/>
+                <textFieldExpression><![CDATA[$F{producto_nombre}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="250" y="0" width="80" height="18"/>
+                <textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+            </textField>
+
+            <textField pattern="#,##0.00">
+                <reportElement x="340" y="0" width="80" height="18"/>
+                <textFieldExpression><![CDATA[$F{preciounitario}]]></textFieldExpression>
+            </textField>
+
+            <textField pattern="#,##0.00">
+                <reportElement x="430" y="0" width="80" height="18"/>
+                <textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <!-- Pie de columna (no usamos nada) -->
+    <columnFooter>
+        <band height="10"/>
+    </columnFooter>
+
+    <!-- Pie de página -->
+    <pageFooter>
+        <band height="20">
+            <staticText>
+                <reportElement x="200" y="0" width="200" height="15"/>
+                <textElement textAlignment="Center"/>
+                <text><![CDATA[¡Gracias por su visita!]]></text>
+            </staticText>
+        </band>
+    </pageFooter>
+
+    <!-- Resumen (total de la factura) -->
+    <summary>
+        <band height="60">
+            <staticText>
+                <reportElement x="340" y="10" width="80" height="20"/>
+                <text><![CDATA[Total:]]></text>
+            </staticText>
+
+            <textField pattern="#,##0.00">
+                <reportElement x="420" y="10" width="90" height="20"/>
+                <textFieldExpression><![CDATA[$F{total_factura}]]></textFieldExpression>
+            </textField>
+        </band>
+    </summary>
+
+</jasperReport>

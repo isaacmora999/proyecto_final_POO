@@ -1,0 +1,15 @@
+<?xml version = "1.0" encoding = "ISO-8859-1"?>
+<!DOCTYPE aplicacion SYSTEM "dtds/aplicacion.dtd">
+
+<aplicacion nombre="RestauranteElTernero">
+
+    <modulo-defecto>
+        <controlador nombre="Typical"/>
+    </modulo-defecto>
+
+    <modulo nombre="Factura">
+        <modelo nombre="Factura"/>
+        <controlador nombre="FacturaReportes"/>
+    </modulo>
+
+</aplicacion>
