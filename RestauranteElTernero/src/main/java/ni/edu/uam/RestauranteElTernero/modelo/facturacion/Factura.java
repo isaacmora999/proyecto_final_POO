@@ -21,6 +21,9 @@ import ni.edu.uam.RestauranteElTernero.modelo.core.EstadoMesa;
 import ni.edu.uam.RestauranteElTernero.modelo.inventario.Inventario;
 import ni.edu.uam.RestauranteElTernero.modelo.inventario.Producto;
 
+import javax.validation.constraints.DecimalMin;
+
+
 @Entity
 @Getter
 @Setter
@@ -76,6 +79,7 @@ public class Factura {
     // 2. Quitamos @Calculation: Para que no haya conflictos visuales.
     @Column(nullable = false, precision = 12, scale = 2)
     @NotNull
+    @DecimalMin(value = "0.00", message = "El total no puede ser negativo")
     private BigDecimal total = BigDecimal.ZERO;
 
     @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, orphanRemoval = true)

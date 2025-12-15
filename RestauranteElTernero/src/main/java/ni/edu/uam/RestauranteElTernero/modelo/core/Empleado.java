@@ -9,6 +9,9 @@ import org.openxava.annotations.View;
 
 import javax.persistence.*;
 
+import javax.validation.constraints.Pattern;
+
+
 @Entity
 @Getter
 @Setter
@@ -23,11 +26,20 @@ public class Empleado {
 
     @Column(length = 60, nullable = false)
     @Required(message = "El nombre del empleado es obligatorio")
+    @Pattern(
+            regexp = "^[A-Za-zÁÉÍÓÚáéíóúÑñ\\s]+$",
+            message = "El nombre del empleado solo puede contener letras y espacios"
+    )
     private String nombre;
 
     @Column(length = 60, nullable = false)
     @Required(message = "El apellido del empleado es obligatorio")
+    @Pattern(
+            regexp = "^[A-Za-zÁÉÍÓÚáéíóúÑñ\\s]+$",
+            message = "El apellido del empleado solo puede contener letras y espacios"
+    )
     private String apellido;
+
 
     @Enumerated(EnumType.STRING)
     @Column(length = 30, nullable = false)

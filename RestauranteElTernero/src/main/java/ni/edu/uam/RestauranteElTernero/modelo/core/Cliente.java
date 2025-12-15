@@ -12,6 +12,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+
+import javax.validation.constraints.Pattern;
+
+
 @Entity
 @Getter
 @Setter
@@ -26,10 +30,18 @@ public class Cliente {
 
     @Column(length = 60, nullable = false)
     @Required(message = "El nombre del cliente es obligatorio")
+    @Pattern(
+            regexp = "^[A-Za-zÁÉÍÓÚáéíóúÑñ\\s]+$",
+            message = "El nombre del cliente solo puede contener letras y espacios"
+    )
     private String nombre;
 
     @Column(length = 60, nullable = false)
     @Required(message = "El apellido del cliente es obligatorio")
+    @Pattern(
+            regexp = "^[A-Za-zÁÉÍÓÚáéíóúÑñ\\s]+$",
+            message = "El apellido del cliente solo puede contener letras y espacios"
+    )
     private String apellido;
 
     @Column(length = 16, nullable = false, unique = true)

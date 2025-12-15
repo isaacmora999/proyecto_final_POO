@@ -17,6 +17,9 @@ import ni.edu.uam.RestauranteElTernero.modelo.core.Cliente;
 import ni.edu.uam.RestauranteElTernero.modelo.core.Mesa;
 import ni.edu.uam.RestauranteElTernero.modelo.core.EstadoMesa;
 
+import javax.validation.constraints.FutureOrPresent;
+
+
 @Entity
 @Getter
 @Setter
@@ -40,6 +43,7 @@ public class Reserva {
 
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull(message = "La fecha y hora de la reserva son obligatorias")
+    @FutureOrPresent(message = "No se permiten reservas en el pasado")
     @Required
     private Date fechaHora;
 
